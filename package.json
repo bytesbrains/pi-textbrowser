@@ -1,7 +1,7 @@
 {
   "name": "pi-textbrowser",
   "version": "1.0.0",
-  "description": "Pi extension — browse the web with structured DOM + OCR text maps. 10-50x cheaper than vision-model screenshots, zero image tokens by default.",
+  "description": "Headless browser for Pi — browse the web with DOM + OCR text maps. No image tokens, 10-50x cheaper than screenshot-based browsing.",
   "keywords": ["pi-package", "pi-extension", "browser", "automation", "playwright", "ocr", "tesseract", "web-scraping"],
   "author": "nandal <nandal@users.noreply.github.com>",
   "repository": {
@@ -15,6 +15,9 @@
   },
   "license": "MIT",
   "main": "./src/index.ts",
+  "engines": {
+    "node": ">=18"
+  },
   "files": [
     "src/",
     "README.md",

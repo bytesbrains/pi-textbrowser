@@ -1,6 +1,9 @@
 # TextBrowser for Pi
 
-> Browse the web with **structured text** instead of raw screenshots. **10-50x cheaper** than vision-model approaches.
+[![npm version](https://img.shields.io/npm/v/pi-textbrowser)](https://www.npmjs.com/package/pi-textbrowser)
+[![license](https://img.shields.io/npm/l/pi-textbrowser)](./LICENSE)
+
+> Headless browser extension for Pi — browse the web with **structured DOM + OCR text maps**. **10-50x cheaper** than screenshot-based browsing.
 
 ```
 ┌─────────────┐     browser_navigate(url)     ┌─────────────┐
@@ -73,35 +76,30 @@ browser_navigate(url="https://example.com", visual=true)
 ## Example Session
 
 ```
-You: Open https://littlevoice.club and explore the games
+You: Open https://example.com and explore the page
 
-→ browser_navigate(url="https://littlevoice.club")
+→ browser_navigate(url="https://example.com")
 
-Page: https://littlevoice.club/
-Title: Little Voice Club — Stories, Games, Songs & Fun for Kids
+Page: https://example.com/
+Title: Example Domain
 Viewport: 1920x1080
 
-Elements (70 interactive of 330 total):
-  [11] <a> href="/games" text="🎮 Play Games"
-  [12] <a> href="/stories" text="🌙 Stories"
+Elements (14 interactive of 82 total):
+  [3] <a> href="https://iana.org/domains/example" text="More information..."
   ...
 
 OCR (full page screenshot):
-Stories, songs & games for curious little minds
-...
-
-→ browser_click(text="🎮 Play Games")
-
-Page: https://littlevoice.club/games
-Title: Games — Little Voice Club
+Example Domain
+This domain is for use in illustrative examples in documents.
 ...
 ```
 
 ## Requirements
 
 - Node.js 18+
-- Playwright browsers installed: `npx playwright install chromium`
+- Pi coding agent installed
+- Playwright Chromium: `npx playwright install chromium`
 
 ## License
 
-MIT
+MIT © [nandal](https://github.com/nandal)
