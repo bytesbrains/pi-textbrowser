@@ -86,20 +86,20 @@ async function generatePageMap(p: Page, visual = false): Promise<{ text: string;
   const title = await p.title().catch(() => "(no title)");
   const viewport = p.viewportSize() ?? { width: 1920, height: 1080 };
 
-  // Extract interactive / visible elements with bounding boxes
+  // Extract interactive / visible elements with bounding boxes (traverses shadow DOM)
   const elements: ElementInfo[] = await p.evaluate(() => {
     const interactive = new Set([
       "A", "BUTTON", "INPUT", "TEXTAREA", "SELECT", "OPTION", "LABEL", "DETAILS", "SUMMARY",
     ]);
     const results: ElementInfo[] = [];
     let index = 0;
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
-    while (walker.nextNode()) {
-      const el = walker.currentNode as Element;
+    const keepAttrs = ["id", "name", "type", "placeholder", "href", "src", "alt", "role", "aria-label", "value"];
+
+    function processElement(el: Element) {
       const rect = el.getBoundingClientRect();
       const style = window.getComputedStyle(el);
-      if (style.display === "none" || style.visibility === "hidden") continue;
-      if (rect.width < 2 || rect.height < 2) continue;
+      if (style.display === "none" || style.visibility === "hidden") return;
+      if (rect.width < 2 || rect.height < 2) return;
 
       const tag = el.tagName.toLowerCase();
       const isInteractive =
@@ -108,11 +108,10 @@ async function generatePageMap(p: Page, visual = false): Promise<{ text: string;
         el.getAttribute("role") === "button" ||
         el.getAttribute("role") === "link";
 
-      if (!isInteractive && rect.width * rect.height < 400) continue;
+      if (!isInteractive && rect.width * rect.height < 400) return;
 
       const text = el.textContent?.trim().slice(0, 200) || undefined;
       const attrs: Record<string, string> = {};
-      const keepAttrs = ["id", "name", "type", "placeholder", "href", "src", "alt", "role", "aria-label", "value"];
       for (const a of keepAttrs) {
         const v = el.getAttribute(a);
         if (v) attrs[a] = v;
@@ -125,7 +124,21 @@ async function generatePageMap(p: Page, visual = false): Promise<{ text: string;
         attributes: attrs,
         bbox: { x: Math.round(rect.x), y: Math.round(rect.y), width: Math.round(rect.width), height: Math.round(rect.height) },
       });
+
+      // Recurse into shadow DOM
+      if ((el as any).shadowRoot) {
+        walkTree((el as any).shadowRoot);
+      }
     }
+
+    function walkTree(root: Document | ShadowRoot) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+      while (walker.nextNode()) {
+        processElement(walker.currentNode as Element);
+      }
+    }
+
+    walkTree(document);
     return results;
   });
 
@@ -226,11 +239,11 @@ export default function (pi: ExtensionAPI) {
     async execute(_toolCallId, params, _signal, _onUpdate) {
       const p = await getPage();
       if (params.selector) {
-        await p.locator(params.selector).first().click({ timeout: 10000 });
+        await p.locator(params.selector).first().click({ timeout: 10000, force: true });
       } else if (params.xpath) {
-        await p.locator(`xpath=${params.xpath}`).first().click({ timeout: 10000 });
+        await p.locator(`xpath=${params.xpath}`).first().click({ timeout: 10000, force: true });
       } else if (params.text) {
-        await p.getByText(params.text, { exact: false }).first().click({ timeout: 10000 });
+        await p.getByText(params.text, { exact: false }).first().click({ timeout: 10000, force: true });
       } else {
         return { content: [{ type: "text", text: "Error: provide selector, xpath, or text" }], isError: true, details: {} };
       }
