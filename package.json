@@ -1,0 +1,35 @@
+{
+  "name": "pi-textbrowser",
+  "version": "1.0.0",
+  "description": "Pi extension — browse the web with structured DOM + OCR text maps. 10-50x cheaper than vision-model screenshots, zero image tokens by default.",
+  "keywords": ["pi-package", "pi-extension", "browser", "automation", "playwright", "ocr", "tesseract", "web-scraping"],
+  "author": "nandal <nandal@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nandal/pi-ext",
+    "directory": "textbrowser"
+  },
+  "homepage": "https://github.com/nandal/pi-ext/tree/main/textbrowser",
+  "bugs": {
+    "url": "https://github.com/nandal/pi-ext/issues"
+  },
+  "license": "MIT",
+  "main": "./src/index.ts",
+  "files": [
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "playwright": "^1.50.0",
+    "tesseract.js": "^6.0.0"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "typebox": "*"
+  },
+  "pi": {
+    "extensions": ["./src/index.ts"],
+    "image": "https://raw.githubusercontent.com/nandal/pi-ext/main/textbrowser/screenshot.png"
+  }
+}
