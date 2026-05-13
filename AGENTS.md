@@ -14,11 +14,61 @@
 | `browser_read` | Get current page context (no action) | Check if page state changed after an action |
 | `browser_evaluate` | Execute arbitrary JavaScript | **Escape hatch** for shadow DOM, complex interactions |
 
-## Dual-Mode Design
+## Dual-Mode Design: When to Use Visual vs Text-Only
 
-**Text-only mode (default)** — screenshots are captured for OCR only, then discarded. Zero image tokens reach the AI. Use this for 90% of cases.
+> ⚠️ **DEFAULT: Always use text-only mode first.** Only switch to visual mode when the task explicitly requires seeing pixels.
 
-**Visual mode** (`visual: true`) — screenshots are returned as base64 PNG alongside OCR text. Use only when you genuinely need to see colors, layout, or images. Expect 5-10× more tokens.
+### Decision Framework
+
+Ask yourself: *"Does this task require seeing colors, positions, or images?"*
+
+#### ✅ Text-Only Mode (`visual: false` or omit) — Use for:
+
+| Category | Examples | Why text works |
+|---|---|---|
+| **Navigation** | Open a URL, find a link, click a button | DOM elements + OCR reveal all interactive items |
+| **Form filling** | Login, search, type into inputs | CSS selectors + text labels identify fields |
+| **Data extraction** | Scrape a table, read article text | OCR + DOM textContent capture all visible text |
+| **Workflow automation** | Multi-step process (login → search → click) | Text elements + OCR track state changes |
+| **API/Admin panels** | Gitea, Firebase Console, GitHub | Structured UI labels are fully readable via text |
+| **Code review** | Read docs, explore repos | Content is textual by nature |
+
+#### 🖼️ Visual Mode (`visual: true`) — Use ONLY for:
+
+| Category | Examples | Why images are needed |
+|---|---|---|
+| **Layout verification** | "Does the button align with the header?" "Is the sidebar overlapping?" | Pixel positions matter |
+| **Color/theme checks** | "Is the dark mode working?" "Does this component match the brand color?" | Colors are invisible in text |
+| **Visual regression** | "Compare before/after screenshots of this component" | Diffing pixels |
+| **Image content** | "What does this dashboard chart show?" "Read the text in this logo" | Images are non-text |
+| **UI design review** | "Does the spacing look right?" "Is the font readable?" | Visual aesthetics |
+| **Debugging rendering** | "Why is this element invisible?" "Check if CSS is loading" | CSS bugs invisible to OCR |
+
+#### 🎯 Quick Reference
+
+```
+User says: "Open Gitea and explore repos"        → text-only ✅
+User says: "Login to LinkedIn and post"           → text-only ✅
+User says: "Check if the dark mode looks correct" → visual 🖼️
+User says: "Is the button centered on the page?"  → visual 🖼️
+User says: "Read the article content"             → text-only ✅
+User says: "Compare this page to the mockup"      → visual 🖼️
+```
+
+### Cost Comparison
+
+| Mode | Avg Tokens | Relative Cost | When |
+|---|---|---|---|
+| Text-only | ~200-400 | **1x** | Default — 90% of tasks |
+| Visual | ~1,500-3,000 | **5-15x** | Only when pixels matter |
+
+### Escalation Path
+
+If text-only mode provides insufficient information for the task, **state why** and escalate:
+
+> *"I can see the login form (elements [22]-[33]) but need to verify the button color matches the brand palette. Let me switch to visual mode."*
+
+Don't silently switch to visual — explain the rationale. This helps users understand token costs and keeps you accountable.
 
 ## Session Persistence
 
@@ -34,6 +84,10 @@ The browser maintains one Playwright Chromium instance per Pi session. All tools
 > Every `browser_navigate` triggers a full page load, destroying login sessions and current state.
 > Once you're on a site, stay there. Use read/click/type/scroll to move around.
 > Only use `browser_navigate` when you genuinely need a completely different URL domain.
+>
+> **⚠️ COST: Default to text-only mode.** Visual mode burns 5-15× more tokens.
+> Use `visual: true` ONLY for layout, colors, design review, or image-content tasks.
+> If text-only is insufficient, explain why before switching.
 
 ### Rule 1: Navigate once, then read & click
 ```

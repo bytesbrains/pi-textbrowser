@@ -55,18 +55,20 @@ Or add to your `.pi/settings.json`:
 
 ## Dual-Mode Design
 
-### Text-only mode (default)
+### Text-only mode (default) — use for 90% of tasks
 
 ```
 browser_navigate(url="https://example.com")
 ```
 
-- Screenshot is captured **only for OCR**
-- Image is **discarded immediately**
+- Screenshot captured **only for OCR** → image discarded
 - Returns: structured DOM elements + OCR text
 - **Zero image tokens** reach the AI
+- **5-15× cheaper** than visual mode
 
-### Visual mode
+**Use when**: navigating, form filling, data extraction, workflow automation, reading content
+
+### Visual mode — use ONLY for pixels, colors, layout
 
 ```
 browser_navigate(url="https://example.com", visual=true)
@@ -74,7 +76,20 @@ browser_navigate(url="https://example.com", visual=true)
 
 - Screenshot captured for OCR **and** returned as base64 PNG
 - Returns: text map + actual image
-- Use when colors, layout, or visual design matter
+- **5-15× more tokens** than text-only
+
+**Use ONLY when**: checking layout alignment, verifying color/theme, debugging CSS, reviewing design, reading image content
+
+### When to use which
+
+| Task | Mode |
+|---|---|
+| "Open Gitea and explore repos" | Text-only ✅ |
+| "Login to LinkedIn and post" | Text-only ✅ |
+| "Check if dark mode looks correct" | Visual 🖼️ |
+| "Is the button centered on the page?" | Visual 🖼️ |
+| "Read the article content" | Text-only ✅ |
+| "Compare this page to the mockup" | Visual 🖼️ |
 
 ## Example Session
 
@@ -106,3 +121,7 @@ This domain is for use in illustrative examples in documents.
 ## License
 
 MIT © [nandal](https://github.com/nandal)
+
+---
+
+*Built by Agent, for Agents 🤖*
