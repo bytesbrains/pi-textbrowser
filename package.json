@@ -1,6 +1,6 @@
 {
   "name": "pi-textbrowser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Headless browser for Pi — browse the web with DOM + OCR text maps. No image tokens, 10-50x cheaper than screenshot-based browsing.",
   "keywords": [
     "pi-package",

@@ -10,7 +10,8 @@ let page: Page | null = null;
 let ocrWorker: any = null;
 let currentHeadless = true;
 
-async function getPage(headless = true): Promise<Page> {
+async function getPage(headless?: boolean): Promise<Page> {
+  headless = headless ?? currentHeadless;
   if (!page || headless !== currentHeadless) {
     if (browser) {
       try { await browser.close(); } catch { /* ignore */ }
@@ -19,7 +20,7 @@ async function getPage(headless = true): Promise<Page> {
     const { chromium } = await import("playwright");
     browser = await chromium.launch({ headless });
     context = await browser.newContext({
-      viewport: { width: 1920, height: 1080 },
+      viewport: { width: 1280, height: 800 },
       userAgent:
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     });
