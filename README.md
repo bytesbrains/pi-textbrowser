@@ -28,6 +28,7 @@ Need to see colors or layout? Flip to **visual mode** and get the PNG too.
 
 ```bash
 pi install npm:pi-textbrowser
+npx playwright install chromium
 ```
 
 Or add to your `.pi/settings.json`:
@@ -37,6 +38,8 @@ Or add to your `.pi/settings.json`:
   "packages": ["npm:pi-textbrowser"]
 }
 ```
+
+> **Note:** The Playwright Chromium binary is a one-time install.
 
 ## Tools
 

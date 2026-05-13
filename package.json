@@ -1,8 +1,17 @@
 {
   "name": "pi-textbrowser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Headless browser for Pi — browse the web with DOM + OCR text maps. No image tokens, 10-50x cheaper than screenshot-based browsing.",
-  "keywords": ["pi-package", "pi-extension", "browser", "automation", "playwright", "ocr", "tesseract", "web-scraping"],
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "browser",
+    "automation",
+    "playwright",
+    "ocr",
+    "tesseract",
+    "web-scraping"
+  ],
   "author": "nandal <nandal@users.noreply.github.com>",
   "repository": {
     "type": "git",
@@ -32,7 +41,9 @@
     "typebox": "*"
   },
   "pi": {
-    "extensions": ["./src/index.ts"],
+    "extensions": [
+      "./src/index.ts"
+    ],
     "image": "https://raw.githubusercontent.com/nandal/pi-ext/main/textbrowser/screenshot.png"
   }
 }
