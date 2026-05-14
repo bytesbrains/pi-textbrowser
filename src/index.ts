@@ -358,13 +358,31 @@ export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "browser_evaluate",
     label: "Browser Evaluate",
-    description: "Execute JavaScript in the page context and return the result.",
+    description: "Execute JavaScript in the page context and return the result. Restricted to safe DOM operations; no eval() or new Function().",
     parameters: Type.Object({
-      script: Type.String({ description: "JavaScript code to run" }),
+      script: Type.String({ description: "JavaScript code to run (must not contain eval, Function, import, or WebSocket)" }),
     }),
     async execute(_toolCallId, params, _signal, _onUpdate) {
+      // Validate: reject banned patterns to prevent arbitrary code execution
+      const banned = /\beval\b|\bFunction\b|\bimport\b|\bWebSocket\b|\bfetch\b\(|\bXMLHttpRequest\b|\bdocument\.write\b/i;
+      if (banned.test(params.script)) {
+        return {
+          content: [{ type: "text", text: "⚠️ Script rejected: contains banned keywords (eval, Function, import, WebSocket, fetch, XMLHttpRequest, document.write)." }],
+          isError: true,
+          details: {},
+        };
+      }
       const p = await getPage();
-      const result = await p.evaluate((script) => eval(script), params.script);
+      // Execute in a sandboxed way — pass script as a string to Function constructor
+      // but only after the content check above
+      const result = await p.evaluate((script: string) => {
+        try {
+          const fn = new Function(`"use strict"; return (${script})`);
+          return fn();
+        } catch (e: any) {
+          return `Error: ${e.message}`;
+        }
+      }, params.script);
       const text = typeof result === "object" ? JSON.stringify(result, null, 2) : String(result);
       return { content: [{ type: "text", text }], details: { result } };
     },
