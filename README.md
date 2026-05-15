@@ -1,7 +1,7 @@
 # TextBrowser for Pi
 
-[![npm version](https://img.shields.io/npm/v/pi-textbrowser)](https://www.npmjs.com/package/pi-textbrowser)
-[![license](https://img.shields.io/npm/l/pi-textbrowser)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/@bytesbrains/pi-textbrowser)](https://www.npmjs.com/package/@bytesbrains/pi-textbrowser)
+[![license](https://img.shields.io/npm/l/@bytesbrains/pi-textbrowser)](./LICENSE)
 
 > Headless browser extension for Pi — browse the web with **structured DOM + OCR text maps**. **10-50x cheaper** than screenshot-based browsing.
 
@@ -27,7 +27,7 @@ Need to see colors or layout? Flip to **visual mode** and get the PNG too.
 ## Install
 
 ```bash
-pi install npm:pi-textbrowser
+pi install npm:@bytesbrains/pi-textbrowser
 npx playwright install chromium
 ```
 
@@ -35,7 +35,7 @@ Or add to your `.pi/settings.json`:
 
 ```json
 {
-  "packages": ["npm:pi-textbrowser"]
+  "packages": ["npm:@bytesbrains/pi-textbrowser"]
 }
 ```
 

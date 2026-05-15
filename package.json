@@ -1,5 +1,5 @@
 {
-  "name": "pi-textbrowser",
+  "name": "@bytesbrains/pi-textbrowser",
   "version": "1.1.0",
   "description": "Headless browser for Pi — browse the web with DOM + OCR text maps. No image tokens, 10-50x cheaper than screenshot-based browsing.",
   "keywords": [

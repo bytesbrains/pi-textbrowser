@@ -8,7 +8,7 @@ let browser: Browser | null = null;
 let context: BrowserContext | null = null;
 let page: Page | null = null;
 let ocrWorker: any = null;
-let currentHeadless = true;
+let currentHeadless = false;
 
 async function getPage(headless?: boolean): Promise<Page> {
   headless = headless ?? currentHeadless;
@@ -211,11 +211,11 @@ export default function (pi: ExtensionAPI) {
     description: "Open a URL in the browser and return the page context (DOM + OCR). Default text-only mode captures screenshots only for OCR — no image tokens. Set visual=true to receive the actual PNG.",
     parameters: Type.Object({
       url: Type.String({ description: "URL to open" }),
-      headless: Type.Optional(Type.Boolean({ description: "Run headless (default true)" })),
+      headless: Type.Optional(Type.Boolean({ description: "Run headless (default false = visible window)" })),
       visual: Type.Optional(Type.Boolean({ description: "Return base64 PNG screenshot alongside text (default false = text-only, zero image tokens)" })),
     }),
     async execute(_toolCallId, params, _signal, _onUpdate) {
-      const p = await getPage(params.headless !== false);
+      const p = await getPage(params.headless === true);
       await p.goto(params.url, { waitUntil: "load", timeout: 30000 });
       const { text, image } = await generatePageMap(p, params.visual);
       const content: any[] = [{ type: "text", text }];
