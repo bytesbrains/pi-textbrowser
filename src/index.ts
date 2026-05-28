@@ -220,7 +220,7 @@ export default function (pi: ExtensionAPI) {
       const { text, image } = await generatePageMap(p, params.visual);
       const content: any[] = [{ type: "text", text }];
       if (image) {
-        content.push({ type: "image", source: { type: "base64", mediaType: "image/png", data: image } });
+        content.push({ type: "image", mimeType: "image/png", data: image });
       }
       return { content, details: { url: p.url() } };
     },
@@ -251,7 +251,7 @@ export default function (pi: ExtensionAPI) {
       const { text, image } = await generatePageMap(p, params.visual);
       const content: any[] = [{ type: "text", text }];
       if (image) {
-        content.push({ type: "image", source: { type: "base64", mediaType: "image/png", data: image } });
+        content.push({ type: "image", mimeType: "image/png", data: image });
       }
       return { content, details: {} };
     },
@@ -278,7 +278,7 @@ export default function (pi: ExtensionAPI) {
       const { text, image } = await generatePageMap(p, params.visual);
       const content: any[] = [{ type: "text", text }];
       if (image) {
-        content.push({ type: "image", source: { type: "base64", mediaType: "image/png", data: image } });
+        content.push({ type: "image", mimeType: "image/png", data: image });
       }
       return { content, details: {} };
     },
@@ -312,7 +312,7 @@ export default function (pi: ExtensionAPI) {
       const { text, image } = await generatePageMap(p, params.visual);
       const content: any[] = [{ type: "text", text }];
       if (image) {
-        content.push({ type: "image", source: { type: "base64", mediaType: "image/png", data: image } });
+        content.push({ type: "image", mimeType: "image/png", data: image });
       }
       return { content, details: {} };
     },
@@ -331,7 +331,7 @@ export default function (pi: ExtensionAPI) {
       const { text, image } = await generatePageMap(p, params.visual);
       const content: any[] = [{ type: "text", text }];
       if (image) {
-        content.push({ type: "image", source: { type: "base64", mediaType: "image/png", data: image } });
+        content.push({ type: "image", mimeType: "image/png", data: image });
       }
       return { content, details: { fullPage: params.fullPage ?? false } };
     },
@@ -349,7 +349,7 @@ export default function (pi: ExtensionAPI) {
       const { text, image } = await generatePageMap(p, params.visual);
       const content: any[] = [{ type: "text", text }];
       if (image) {
-        content.push({ type: "image", source: { type: "base64", mediaType: "image/png", data: image } });
+        content.push({ type: "image", mimeType: "image/png", data: image });
       }
       return { content, details: {} };
     },
