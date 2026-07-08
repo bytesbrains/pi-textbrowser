@@ -12,15 +12,14 @@
     "tesseract",
     "web-scraping"
   ],
-  "author": "nandal <nandal@users.noreply.github.com>",
+  "author": "BytesBrains Pte Ltd (https://bytesbrains.com)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nandal/pi-ext",
-    "directory": "textbrowser"
+    "url": "git+https://github.com/bytesbrains/pi-textbrowser.git"
   },
-  "homepage": "https://github.com/nandal/pi-ext/tree/main/textbrowser",
+  "homepage": "https://github.com/bytesbrains/pi-textbrowser#readme",
   "bugs": {
-    "url": "https://github.com/nandal/pi-ext/issues"
+    "url": "https://github.com/bytesbrains/pi-textbrowser/issues"
   },
   "license": "MIT",
   "main": "./src/index.ts",
